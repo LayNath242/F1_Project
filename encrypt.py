@@ -42,6 +42,11 @@ def Encrypt_File(file, new_name, delete=False):
 
 options = get_arguments()
 filename = options.filename
-new_name = EncryptName(6, filename)
-Encrypt_File(filename, new_name)
+lowecasename = filename.lower()
+os.rename(filename, lowecasename.replace(" ", "-"))
+file = lowecasename.replace(" ", "-")
+new_name = EncryptName(6, file)
+Encrypt_File(file, new_name)
 spliter.SplitFile(new_name)
+
+
