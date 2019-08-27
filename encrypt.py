@@ -1,11 +1,14 @@
 import base64
-import os
+import os, sys
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from transposition_ipher import EncryptName
-import spliter 
+sys.path.append("/home/msi/Desktop/Project/MyModules/")
+# from transposition_ipher import EncryptName
+# import spliter 
+from MyModules import spliter
+from MyModules.transposition_ipher import EncryptName
 
 def Encrypt_File(file, new_name, delete=False):
     password = b"msipl627rc72677812dhtcdkehgdodh"

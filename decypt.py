@@ -1,7 +1,9 @@
 from cryptography.fernet import Fernet
-from transposition_ipher import DecryptName
 import os
-from joiner import joinFiles
+import sys
+sys.path.append("/home/msi/Desktop/Project/MyModules/")
+from MyModules.joiner import joinFiles
+from MyModules.transposition_ipher import DecryptName
 
 key = b'sEHVm2fH-O7ndw2gzseVC3LJ3cXLoA4ZD2GjQfU8vDk='
 input_file = 'moy.vmipd4e'
