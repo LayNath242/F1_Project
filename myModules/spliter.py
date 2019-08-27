@@ -11,16 +11,17 @@ def SplitFile(inputFile):
     f.close()
 
     bytes = len(data)
-    x = int(bytes * 0.034)
+    
+    x = int(bytes  * 0.034)
 
     if sys.version_info.major == 3:
-        noOfChunks = int(bytes / x)
+        noOfChunks = int(bytes * 8 / x)
     elif sys.version_info.major == 2:
         noOfChunks = bytes / x
     if(bytes % x):
         noOfChunks += 1
     j = 0
-    for i in range(0, bytes + 1, x):
+    for i in range(0, 30, x):
         j += 1
         fn1 = "%s-chunk-%s-Of-%s" % (inputFile, j, noOfChunks)
         f = open(os.path.join("../F1_Project/splitFIle",fn1), 'wb')
