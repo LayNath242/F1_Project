@@ -11,6 +11,8 @@ def SplitFile(inputFile):
     f.close()
 
     bytes = len(data)
+    if (bytes < 650):
+        bytes = 650
     x = int(bytes * 0.034)
 
     if sys.version_info.major == 3:

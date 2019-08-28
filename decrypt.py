@@ -28,7 +28,7 @@ filename1 = options.filename
 filename2 = EncryptName(6, filename1)
 key = options.key
 
-JoinFiles(filename2, 31)
+JoinFiles(filename2, 30)
 with open(filename2, 'rb') as f:
     data = f.read()
 
