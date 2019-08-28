@@ -23,7 +23,7 @@ def SplitFile(inputFile):
     for i in range(0, bytes + 1, x):
         j += 1
         fn1 = "%s-chunk-%s-Of-%s" % (inputFile, j, noOfChunks)
-        f = open(os.path.join("/home/msi/Desktop/Project/Split_FIle",fn1), 'wb')
+        f = open(os.path.join("../F1_Project/splitFIle",fn1), 'wb')
         f.write(data[i:i + x])
         f.close()
     os.remove(inputFile)

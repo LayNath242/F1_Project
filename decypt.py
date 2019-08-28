@@ -1,21 +1,41 @@
 from cryptography.fernet import Fernet
 import os
 import sys
-sys.path.append("/home/msi/Desktop/Project/MyModules/")
-from MyModules.joiner import joinFiles
-from MyModules.transposition_ipher import DecryptName
+import optparse
+sys.path.append("./myModules/")
+from myModules.joiner import JoinFiles
+from myModules.transposition_ipher import DecryptName, EncryptName
 
-key = b'sEHVm2fH-O7ndw2gzseVC3LJ3cXLoA4ZD2GjQfU8vDk='
-input_file = 'moy.vmipd4e'
-output_file = DecryptName(6, input_file)
 
-joinFiles(input_file, 30)
-with open(input_file, 'rb') as f:
+def get_arguments():
+    parser = optparse.OptionParser()
+    parser.add_option("-f", "--filename", dest="filename", 
+                    help="Enter your file name than you encypt to decypt, Ex: myfile.ex")
+
+    parser.add_option("-k", "--key", dest="key", 
+                    help="Enter Key that you get, Ex: LzYXMHHpKD35eoI0zBwR5XxcMOBi3_fghqnW7AI3Ft0")
+    
+    (options, _ )= parser.parse_args()
+    if not options.filename:
+        parser.error("[-] Please spacify file name, use --help for more info.")
+    elif not options.key:
+        parser.error("[-] Please spacify key , use --help for more info")
+    return options
+
+
+options = get_arguments()
+filename1 = options.filename
+filename2 = EncryptName(6, filename1)
+key = options.key
+
+JoinFiles(filename2, 31)
+with open(filename2, 'rb') as f:
     data = f.read()
 
 fernet = Fernet(key)
 encrypted = fernet.decrypt(data)
-os.remove(input_file)
+os.remove(filename2)
 
-with open(output_file + "_temp", 'wb') as f:
+with open(filename1 + "_decypt", 'wb') as f:
     f.write(encrypted)
+

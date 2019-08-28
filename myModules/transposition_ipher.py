@@ -19,11 +19,8 @@ def DecryptName(key, file):
     row = 0
     for symbol in file:
         plaintext[col] += symbol
-        col += 1 # point to next column
+        col += 1
         if (col == numOfColumns) or (col == numOfColumns - 1 and row >= numOfRows - numOfShadedBoxes):
             col = 0
             row += 1
     return ''.join(plaintext)
-
-
-# print(Encrypt(8, "hello world"))

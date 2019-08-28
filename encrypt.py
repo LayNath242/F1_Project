@@ -1,17 +1,26 @@
 import base64
 import os, sys
+import optparse
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-sys.path.append("/home/msi/Desktop/Project/MyModules/")
-# from transposition_ipher import EncryptName
-# import spliter 
-from MyModules import spliter
-from MyModules.transposition_ipher import EncryptName
+sys.path.append("./myModules/")
+from myModules import spliter
+from myModules.transposition_ipher import EncryptName
+
+def get_arguments():
+    parser = optparse.OptionParser()
+    parser.add_option("-f", "--filename", dest="filename", 
+                      help="Enter your file name to encypt , Ex: myfile.ex")
+    (options, _ )= parser.parse_args()
+    if not options.filename:
+        parser.error("[-] Please spacify an filename, use --help for more info.")
+    return options
+
 
 def Encrypt_File(file, new_name, delete=False):
-    password = b"msipl627rc72677812dhtcdkehgdodh"
+    password = b"LzYXMHHpKD35eoI0zBwR5XxcMOBi3_fghqnW7AI3Ft0"
     salt = os.urandom(16)
     kdf = PBKDF2HMAC(
     algorithm=hashes.SHA256(),
@@ -30,7 +39,9 @@ def Encrypt_File(file, new_name, delete=False):
         f.write(key)
 
 
-file = "myvideo.mp4"
-new_name = EncryptName(6, file)
-Encrypt_File(file, new_name)
+
+options = get_arguments()
+filename = options.filename
+new_name = EncryptName(6, filename)
+Encrypt_File(filename, new_name)
 spliter.SplitFile(new_name)
