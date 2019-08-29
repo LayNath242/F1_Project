@@ -1,5 +1,6 @@
 import math, pyperclip
 
+
 def EncryptName(key, file):
     ciphertext = [''] * key
     for col in range(key):
