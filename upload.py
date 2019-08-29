@@ -17,4 +17,7 @@ try:
             f.write("%s\n" % item)
     print("Upload successes")
 except:
+    for i in range(1,31):
+        fn1 = filename + "-%s" % (i)
+        os.remove(fn1)
     print("Fail to Upload")

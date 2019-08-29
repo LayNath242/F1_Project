@@ -1,7 +1,11 @@
-import ipfsapi
+import ipfshttpclient
+
+api = ipfshttpclient.connect('/ip4/127.0.0.1/tcp/5001/http')
 
 def ipfsFileFunction(filename): 
-    api = ipfsapi.connect('127.0.0.1', 5001) 
     ipfsLoadedFile = api.add(filename)
     ipfsHash = (ipfsLoadedFile['Hash'])
     return ipfsHash
+
+def ipfsFileget(hash):
+    api.get(hash)
