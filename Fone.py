@@ -7,9 +7,8 @@ from cryptography.fernet import Fernet
 
 
 
-def get_argparse():
+def gettingStart():
      parser = argparse.ArgumentParser()
-
      subparsers = parser.add_subparsers(title="subcommand")
 
      parser_upload = subparsers.add_parser('upload')
@@ -39,6 +38,7 @@ def created_folder():
     if not os.path.exists(dirName):
         os.makedirs(dirName)
         print("Directory " , dirName ,  " Created ")
+
 
 def encryptFs(filename):
     key = Fernet.generate_key()
@@ -71,7 +71,8 @@ def encryptFs(filename):
         f = open(fen, 'wb')
         f.write(encrypted_file)
         f.close()
-   
+
+
 def decryptFs(filename,hash, key):
     dataList = []
     for chunkName in hash:
@@ -86,6 +87,7 @@ def decryptFs(filename,hash, key):
         f2.write(data)
     f2.close()
 
+
 def ipfsFileAdd(filename):
     api = ipfshttpclient.Client()
     ipfsLoadedFile = api.add(filename, recursive=True)
@@ -94,9 +96,11 @@ def ipfsFileAdd(filename):
     print(ipfsHash)
     return ipfsHash
 
+
 def ipfsFileget(hash):
     api = ipfshttpclient.Client()
     api.get(hash)
+
 
 def ipfsDownload(filename, key):
     try:  
@@ -108,6 +112,7 @@ def ipfsDownload(filename, key):
         print("Download successes")
     except:
         print("Download fail")
+
 
 def ipfsUpload(filename):
     try:
@@ -129,4 +134,5 @@ def ipfsUpload(filename):
             os.remove(fn1)
         print("Fail to Upload")
 
-get_argparse()
+
+gettingStart()
