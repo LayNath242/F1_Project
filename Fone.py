@@ -8,33 +8,37 @@ from cryptography.fernet import Fernet
 
 
 def gettingStart():
-     parser = argparse.ArgumentParser()
-     subparsers = parser.add_subparsers(title="subcommand")
+    try:
+        parser = argparse.ArgumentParser()
+        subparsers = parser.add_subparsers(title="subcommand")
 
-     parser_upload = subparsers.add_parser('upload')
-     parser_upload.add_argument("-f","--filename", dest='filename', 
-                              help="Enter your file name to encypt , Ex: myfile.ex")
-     parser_upload.set_defaults(func=ipfsUpload)
+        parser_upload = subparsers.add_parser('upload')
+        parser_upload.add_argument("filename", 
+                                help="Enter your file name to encypt , Ex: myfile.ex")
+        parser_upload.set_defaults(func=ipfsUpload)
 
-     parser_download = subparsers.add_parser('download')
-     parser_download.add_argument("-f", "--filename", dest="filename", 
-                              help="Enter your file name than you encypt to decypt, Ex: myfile.ex")
-     parser_download.add_argument("-k", "--key", dest="key", 
-                              help="Enter Key that you get, Ex: LzYXMHHpKD35eoI0zBwR5XxcMOBi3_fghqnW7AI3Ft0")
-     parser_download.set_defaults(func=ipfsDownload)
+        parser_download = subparsers.add_parser('download')
+        parser_download.add_argument("filename",
+                                help="Enter your file name than you encypt to decypt, Ex: myfile.ex")
+        parser_download.add_argument("-k", "--key", dest="key", 
+                                help="Enter Key that you get, Ex: LzYXMHHpKD35eoI0zBwR5XxcMOBi3_fghqnW7AI3Ft0")
+        parser_download.set_defaults(func=ipfsDownload)
 
-     args = parser.parse_args()
+        args = parser.parse_args()
 
-     arg_spec = inspect.getfullargspec(args.func)
-     if arg_spec.varkw:
-          args_for_func = vars(args)
-     else:
-          args_for_func = {k:getattr(args, k) for k in arg_spec.args}
-     args.func(**args_for_func)
-
+        arg_spec = inspect.getfullargspec(args.func)
+        if arg_spec.varkw:
+            args_for_func = vars(args)
+        else:
+            args_for_func = {k:getattr(args, k) for k in arg_spec.args}
+        args.func(**args_for_func)
+    except:
+        print("please choose [upload] or [download] funtion")
+        print("EX: Fone upload {filename}")
+        print("Ex: Fone download {filename} -k {key}")
 
 def created_folder():
-    dirName = "./files/"
+    dirName = "./keys/"
     if not os.path.exists(dirName):
         os.makedirs(dirName)
         print("Directory " , dirName ,  " Created ")
@@ -44,7 +48,7 @@ def encryptFs(filename):
     key = Fernet.generate_key()
     fer = Fernet(key)
     created_folder()
-    with open(os.path.join("./files/",("key-"+filename+".pem")), 'wb') as f:
+    with open(os.path.join("./keys/",("key-"+filename+".pem")), 'wb') as f:
         f.write(key)
     f = open(filename, 'rb')
     data = f.read()
@@ -82,7 +86,7 @@ def decryptFs(filename,hash, key):
         dataList.append(encrypted) 
         f.close()
         os.remove(chunkName)
-    f2 = open(os.path.join('./files/',(filename)), 'wb')
+    f2 = open(os.path.join('./keys/',(filename)), 'wb')
     for data in dataList:
         f2.write(data)
     f2.close()
@@ -105,7 +109,7 @@ def ipfsFileget(hash):
 def ipfsDownload(filename, key):
     try:  
         fn1 = filename + "-hash.txt"
-        hash = [line.rstrip('\n') for line in open(os.path.join('./files/',fn1))]
+        hash = [line.rstrip('\n') for line in open(os.path.join('./keys/',fn1))]
         for i in hash:
             ipfsFileget(i)
         decryptFs(filename,hash, key)
@@ -120,11 +124,10 @@ def ipfsUpload(filename):
         encryptFs(filename)
         for i in range(1,31):
             fn1 = filename + "-%s" % (i)
-            # ipfsFileAdd(fn1)
             h = ipfsFileAdd(fn1)
             hash.append(h)
             os.remove(fn1)
-        with open(os.path.join("./files/",(filename + '-hash.txt')), 'w') as f:
+        with open(os.path.join("./keys/",(filename + '-hash.txt')), 'w') as f:
             for item in hash:
                 f.write("%s\n" % item)
         print("Upload successes")
