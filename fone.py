@@ -9,8 +9,9 @@ from cryptography.fernet import Fernet
 
 def gettingStart():
     try:
-        parser = argparse.ArgumentParser()
-        subparsers = parser.add_subparsers(title="subcommand")
+        parser = argparse.ArgumentParser(help= "help")
+        # parser.add_argument("echo",help="echo string here")
+        subparsers = parser.add_subparsers()
 
         parser_upload = subparsers.add_parser('upload')
         parser_upload.add_argument("filename", 
@@ -33,9 +34,10 @@ def gettingStart():
             args_for_func = {k:getattr(args, k) for k in arg_spec.args}
         args.func(**args_for_func)
     except:
-        print("please choose [upload] or [download] funtion")
-        print("EX: Fone upload {filename}")
-        print("Ex: Fone download {filename} -k {key}")
+        print("> fone upload -f {filename}    use to upload file")
+        print("> fone download -f {filename} -k {key}   use to downloadfile" + "\n")
+        print("-f, --filename    use to input filename")
+        print("-k, --key    use to input key" + "\n")
 
 def created_folder():
     dirName = "./keys/"
@@ -135,7 +137,7 @@ def ipfsUpload(filename):
         for i in range(1,31):
             fn1 = filename + "-%s" % (i)
             os.remove(fn1)
-        print("Fail to Upload")
+        print("Fail to Upload Please check you run : ipfs daemon")
 
 
 gettingStart()
